@@ -1,4 +1,8 @@
-# React + Vite
+# Pulse Chat App - Client
+
+This is the client side of the Pulse Chat App. It is built using React and Vite.
+
+## Getting Started
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

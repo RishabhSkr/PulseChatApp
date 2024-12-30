@@ -10,8 +10,10 @@ This is the server side of the project. It is responsible for handling the reque
 - Bcrypt
 - Multer
 - Socket.io
-- ESLint
-- Prettier
+- faker
+- mui
+- tailwindcss
+- Redux/Recoil
 
 ### Installation
 1. Clone the repository
@@ -56,7 +58,9 @@ JWT_SECRET=your-jwt-secret
 - `new user`
 - `user left`
 
-### Contributors
+### Commits
+- frontened finished
+- backend : api finished
 
 
 ### License

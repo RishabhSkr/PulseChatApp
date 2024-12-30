@@ -32,4 +32,11 @@ const connectDB = (uri)=>{
     })
 }
 
-export {connectDB,sendToken,cookieOptions}
+const emitEvent = (io,event,users,data)=>{
+    console.log("Emitting event:", event);
+} 
+
+const deleteFilesFromCloudinary =async (public_id)=>{
+    console.log("Deleting files from cloudinary");
+}
+export {connectDB,sendToken,cookieOptions,emitEvent,deleteFilesFromCloudinary}

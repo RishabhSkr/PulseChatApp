@@ -1,16 +1,31 @@
 import { Avatar, Button, ListItem, Dialog, DialogTitle, Stack, Typography } from "@mui/material"
-import { sampleNotifications } from "../constants/sampleData"
-import { memo } from "react"
+import { memo, useEffect } from "react"  // Added useEffect
 import PropTypes from 'prop-types'
 import { transformImage } from "../lib/features"
+import { useAcceptFriendRequestMutation, useGetNotificationQuery } from "../redux/api/api"
+import { useDispatch, useSelector } from "react-redux"
+import { setIsNotification } from "../redux/reducers/misc"
+import {toast} from 'react-hot-toast'
+import { useAsyncMutation } from "../hooks/hook"
+
 
 export const Notifications = () => {
-  const friendRequestHandler = ({ _id, accept }) => {
-    console.log(_id, accept)
+const {isLoading, data, error, isError} = useGetNotificationQuery();
+const [acceptRequest] = useAsyncMutation(useAcceptFriendRequestMutation);
+const dispatch = useDispatch();
+const { isNotification } = useSelector((state) => state.misc);
+
+const closeHandler = () => dispatch(setIsNotification(false));
+
+  const friendRequestHandler = async ({ _id, accept }) => {
+    dispatch(setIsNotification(false));
+    await acceptRequest("Accepting Request..",{ requestId: _id, accept });
   }
+
+
   return (
     <Dialog 
-      open
+      open={isNotification} onClose={closeHandler}
       PaperProps={{
         sx: {
           backgroundColor: '#1f2937',
@@ -23,8 +38,12 @@ export const Notifications = () => {
         <DialogTitle sx={{ color: 'white', fontSize: '1.5rem', pb: 2 }}>
           Notifications
         </DialogTitle>
-        {sampleNotifications.length > 0 ? (
-          sampleNotifications.map(({ sender, _id }) => (
+        {isLoading ? (
+          <Typography textAlign={"center"} sx={{ color: 'gray.400' }}>
+            No Data Available
+          </Typography>
+        ) : data.allRequests.length > 0 ? (
+          data.allRequests.map(({ sender, _id }) => (
             <NotificationItem
               sender={sender}
               _id={_id}
@@ -75,7 +94,7 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
         <Stack
           direction={{
             xs: "column",
-            sm: "row",
+            sm: "column",
           }}
           spacing={1}
         >
@@ -89,7 +108,7 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
             }}
             onClick={() => handler({ _id, accept: true })}
           >
-            Accept
+            ✓
           </Button>
           
           <Button 
@@ -101,7 +120,7 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
             }}
             onClick={() => handler({ _id, accept: false })}
           >
-            Reject
+           ❌
           </Button>
         </Stack>
       </Stack>
@@ -111,8 +130,3 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
 
 
 NotificationItem.displayName = 'NotificationItem';
-NotificationItem.propTypes = {
-  sender: PropTypes.object.isRequired,
-  _id: PropTypes.string.isRequired,
-  handler: PropTypes.func.isRequired
-};

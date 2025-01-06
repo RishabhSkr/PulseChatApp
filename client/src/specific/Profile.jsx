@@ -5,13 +5,13 @@ import {
   CalendarMonth as CalendarIcon,
 } from "@mui/icons-material";
 import moment from "moment";
-import { transformImage } from "../lib/features";
+// import { transformImage } from "../lib/features";
 
 const Profile = ({ user }) => {
   return (
     <Stack spacing={"2rem"} direction={"column"} alignItems={"center"}>
       <Avatar
-        src={transformImage(user?.avatar?.url)}
+        src={user?.avatar?.url}
         sx={{
           width: 150,
           height: 150,

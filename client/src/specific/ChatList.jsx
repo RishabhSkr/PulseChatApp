@@ -1,6 +1,5 @@
 import { Stack } from "@mui/material";
 import ChatItem from "../components/shared/ChatItem";
-import PropTypes from 'prop-types';
 
 const ChatList = ({
   w = "100%",
@@ -13,7 +12,7 @@ const ChatList = ({
       count: 0,
     },
   ],
-  handleDeleteChat,
+  handleDeleteChat,  // renamed from onClick
 }) => {
   return (
     <Stack width={w} direction={"column"} overflow={"auto"} height={"100%"}>
@@ -39,25 +38,13 @@ const ChatList = ({
             key={_id}
             groupChat={groupChat}
             sameSender={chatId === _id}
-            handleDeleteChat={handleDeleteChat}
+            handleDeleteChat={handleDeleteChat}  // match the prop name
           />
         );
       })}
     </Stack>
   );
 };
-ChatList.propTypes = {
-  w: PropTypes.string,
-  chats: PropTypes.array,
-  chatId: PropTypes.string,
-  onlineUsers: PropTypes.array,
-  newMessagesAlert: PropTypes.arrayOf(
-    PropTypes.shape({
-      chatId: PropTypes.string,
-      count: PropTypes.number
-    })
-  ),
-  handleDeleteChat: PropTypes.func
-};
+
 
 export default ChatList;

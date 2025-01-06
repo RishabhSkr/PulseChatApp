@@ -1,6 +1,5 @@
 import { Container, Paper, Typography } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { matBlack } from '../../constants/color'
 
 const Table = ({ rows, cols, heading, rowHeight = 52 }) => {
     return (

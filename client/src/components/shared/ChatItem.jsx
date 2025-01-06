@@ -27,7 +27,7 @@ const ChatItem = ({
       <motion.div
         initial={{ opacity: 0, y: "-100%" }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 * index }}
+        transition={{ delay: 0.3}}
         style={{
           display: "flex",
           gap: "1rem",
@@ -66,19 +66,5 @@ const ChatItem = ({
   );
 };
 
-
-
-
-ChatItem.propTypes = {
-  avatar: PropTypes.array,
-  name: PropTypes.string.isRequired,
-  _id: PropTypes.string.isRequired,
-  groupChat: PropTypes.bool,
-  sameSender: PropTypes.bool,
-  isOnline: PropTypes.bool,
-  newMessageAlert: PropTypes.object,
-  index: PropTypes.number,
-  handleDeleteChat: PropTypes.func.isRequired,
-};
 
 export default memo(ChatItem);

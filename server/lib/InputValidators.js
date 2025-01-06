@@ -18,7 +18,6 @@ const registerValidator = () => [
   body("username", "Please Enter Username").notEmpty(),
   body("bio", "Please Enter Bio").notEmpty(),
   body("password", "Please Enter Password").notEmpty(),
-  // check("avatar").notEmpty().withMessage('Please Upload Avatar'),
 ];
 
 const loginValidator = () => [
@@ -34,6 +33,7 @@ const newGroupValidator = () => [
     .isArray({ min: 2, max: 100 })
     .withMessage("Members must be 2-100"),
 ];
+
 
 const addMemberValidator = () => [
   body("chatId", "Please Enter Chat ID").notEmpty(),

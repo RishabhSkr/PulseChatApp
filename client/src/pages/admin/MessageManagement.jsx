@@ -1,12 +1,14 @@
 import { Stack, Box } from '@mui/material';
 import { useEffect, useState } from 'react';
-import AdminLayout from '../../components/layout/AdminLayout'
-import { dashboardData } from '../../constants/sampleData'
-import AvatarCard from '../../components/shared/AvatarCard'
-import Table from '../../components/shared/Table'
-import moment from 'moment'
-import RenderAttachment  from "../../components/shared/RenderAttachements"
-import { fileFormat } from "../../lib/features"
+import AdminLayout from '../../components/layout/AdminLayout';
+import { dashboardData } from '../../constants/sampleData';
+import AvatarCard from '../../components/shared/AvatarCard';
+import Table from '../../components/shared/Table';
+import moment from 'moment';
+import RenderAttachment from '../../components/shared/RenderAttachements';
+import { fileFormat, transformImage } from '../../lib/features';
+import { useMessageManagementQuery } from '../../redux/api/api';
+import { useErrors } from '../../hooks/hook';
 
 const columns = [
   {
@@ -24,14 +26,13 @@ const columns = [
       const { attachments } = params.row;
 
       return attachments?.length > 0
-        ? attachments.map((i,idx) => {
+        ? attachments.map((i, index) => {
             const url = i.url;
             const file = fileFormat(url);
-
+      
             return (
-              <Box key={{idx}}>
+              <Box key={index}>
                 <a
-                
                   href={url}
                   download
                   target="_blank"
@@ -47,6 +48,7 @@ const columns = [
         : "No Attachments";
     },
   },
+
   {
     field: "content",
     headerName: "Content",
@@ -54,17 +56,12 @@ const columns = [
     width: 400,
   },
   {
-   field: "sender",
+    field: "sender",
     headerName: "Sent By",
     headerClassName: "table-header",
     width: 200,
-    // yeh important h yhan kaise sender each row me show hoga
     renderCell: (params) => (
-      <Stack 
-        direction="row" 
-        spacing={2} 
-        alignItems="center"
-      >
+      <Stack direction={"row"} spacing={"1rem"} alignItems={"center"}>
         <AvatarCard alt={params.row.sender.name} src={params.row.sender.avatar} />
         <span>{params.row.sender.name}</span>
       </Stack>
@@ -74,42 +71,60 @@ const columns = [
     field: "chat",
     headerName: "Chat",
     headerClassName: "table-header",
-    width: 150,
+    width: 220,
+    renderCell: (params) => (
+      params.row.chat ? <span>{params.row.chat}</span> : "NA"
+    ),
   },
   {
-    field: "groupchat",
-    headerName: "GroupChat",
+    field: "groupChat",
+    headerName: "Group Chat",
     headerClassName: "table-header",
-    width: 250,
+    width: 100,
   },
   {
     field: "createdAt",
-    headerName: "Created At",
+    headerName: "Time",
     headerClassName: "table-header",
     width: 250,
   },
 ];
+
 const MessageManagement = () => {
-  const [rows, setRows] = useState([])
+    const [rows, setRows] = useState([]);
+    const { data, isLoading, isError, error } = useMessageManagementQuery();
 
-  useEffect(() => {
-    const data = dashboardData.messages.map((message) => ({
-      id: message._id,
-      attachments: message.attachments, // Fix spelling here
-      content: message.content || "No content",
-      sender: message.sender,
-      chat: message.chat,
-      groupchat: message.groupChat, // Fix casing here
-      createdAt: moment(message.createdAt).format("MMMM Do YYYY, h:mm:ss a"),
-    }))
-    setRows(data)
-  }, [])
+    useEffect(() => {
+      if (data) {
+        setRows(
+          data.messages.map((i) => ({
+            ...i,
+            id: i._id,
+            sender: {
+              name: i.sender.name,
+              avatar: transformImage(i.sender.avatar, 50),
+            },
+            createdAt: moment(i.createdAt).format("MMMM Do YYYY, h:mm:ss a"),
+          }))
+        );
+      }
+    }, [data]);
 
-  return (
-    <AdminLayout>
-    <Table cols={columns} rows={rows} rowHeight={200} />
-    </AdminLayout>
-  )
-}
 
-export default MessageManagement
+    useErrors([
+        {
+            isError: isError,
+            error: error,
+        },
+    ]);
+
+    return (
+        <AdminLayout>
+        {isLoading ? <div>Loading...</div> : 
+            <Table cols={columns} rows={rows} rowHeight={200} />
+        }
+        </AdminLayout>
+    );
+};
+
+export default MessageManagement;

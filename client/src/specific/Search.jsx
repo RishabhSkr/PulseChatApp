@@ -3,21 +3,53 @@ import SearchIcon from '@mui/icons-material/Search';
 import {useInputValidation} from '6pp';
 import UserItem from "../components/shared/UserItem";
 import { useState } from "react";
-import {sampleUsers} from "../constants/sampleData";
-
+import { useDispatch, useSelector } from "react-redux";
+import { setIsSearch } from "../redux/reducers/misc";
+import { useLazySearchUserQuery, useSendFriendRequestMutation } from "../redux/api/api";
+import { useEffect } from "react";
+import { useAsyncMutation } from "../hooks/hook";
 
 export const Search = () => {
   const searchQuery = useInputValidation("");
-  const isLoadingSendFriendReq = false;
-  const [users,setUsers] = useState(sampleUsers); 
+  const {isSearch} = useSelector(state => state.misc);
+  const dispatch = useDispatch();
+  const [searchUser] =useLazySearchUserQuery();
+  const [users,setUsers] = useState([]); 
+
+  const [sendFriendRequest, isLoadingSendFriendReq] = useAsyncMutation(useSendFriendRequestMutation);
   
-  const addFriendHandler = (id) => {
-    console.log(id)
+  const addFriendHandler = async (id) => {
+    try {
+      await sendFriendRequest(
+        "Sending friend request...",
+        { userId: id }  
+      );
+    } catch (error) {
+      console.error("Friend request error:", error);
+    }
   }
+
+  const handleSearchClose= ()=>{
+    dispatch(setIsSearch(false));
+  }
+  useEffect(() => {
+    const timeOutId = setTimeout(() => {
+      searchUser(searchQuery.value)
+        .then(({ data }) => {
+          if (data?.users) {
+            setUsers(data.users);
+          }
+        })
+        .catch((err) => console.log(err));
+    }, 500); 
+    
+    return () => clearTimeout(timeOutId);
+  }, [searchQuery.value, searchUser])
 
   return (
     <Dialog 
-      open
+      open={isSearch }
+      onClose={handleSearchClose}
       PaperProps={{
         sx: {
           backgroundColor: '#1f2937',

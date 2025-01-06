@@ -2,19 +2,23 @@ import { Typography, Box } from "@mui/material";
 import moment from "moment";
 import { fileFormat } from "../../lib/features";
 import RenderAttachment from "./RenderAttachements";
-
+import { motion } from "framer-motion";
+import { Opacity } from "@mui/icons-material";
 
 
 
 const MessageComponent = ({ message, user }) => {
-    const { sender, content, attachments, createdAt } = message;
-    // console.log(message);
+    const { sender, content, attachments=[], createdAt } = message;
     const isSameSender = sender?._id === user?._id;
     const timeAgo = moment(createdAt).fromNow();
 
     return (
-        <div className={`flex ${isSameSender ? 'justify-end' : 'justify-start'} w-full`}>
-            <div className={`max-w-[70%] p-3 rounded-lg ${isSameSender
+        <div  className={`flex ${isSameSender ? 'justify-end' : 'justify-start'} w-full`}>
+            <motion.div 
+                initial={{ opacity: 0, x: "-100%" }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2 }}
+                className={`max-w-[70%] p-3 rounded-lg ${isSameSender
                 ? 'bg-blue-500 text-white rounded-tr-none'
                 : 'bg-gray-200 text-gray-800 rounded-tl-none'
                 }`}>
@@ -56,7 +60,7 @@ const MessageComponent = ({ message, user }) => {
                 >
                     {timeAgo}
                 </Typography>
-            </div>
+            </motion.div>
         </div>
     );
 }

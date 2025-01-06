@@ -1,54 +1,67 @@
-import moment from "moment";
+import moment from 'moment';
 
-const fileFormat = (url = "") => {
-  const fileExt = url.split(".").pop();
+const fileFormat = (url = '') => {
+    const fileExt = url.split('.').pop();
 
-  if (fileExt === "mp4" || fileExt === "webm" || fileExt === "ogg")
-    return "video";
+    if (fileExt === 'mp4' || fileExt === 'webm' || fileExt === 'ogg')
+        return 'video';
 
-  if (fileExt === "mp3" || fileExt === "wav") return "audio";
-  if (
-    fileExt === "png" ||
-    fileExt === "jpg" ||
-    fileExt === "jpeg" ||
-    fileExt === "gif"
-  )
-    return "image";
+    if (fileExt === 'mp3' || fileExt === 'wav') return 'audio';
+    if (
+        fileExt === 'png' ||
+        fileExt === 'jpg' ||
+        fileExt === 'jpeg' ||
+        fileExt === 'gif'
+    )
+        return 'image';
 
-  return "file";
+    return 'file';
 };
 
 // https://res.cloudinary.com/dj5q966nb/image/upload/dpr_auto/w_200/v1710344436/fafceddc-2845-4ae7-a25a-632f01922b4d.png
 
 // /dpr_auto/w_200
-const transformImage = (url = "", width = 100) => {
-  const newUrl = url.replace("upload/", `upload/dpr_auto/w_${width}/`);
+const transformImage = (url = '', width = 100) => {
+    const newUrl = url.replace('upload/', `upload/dpr_auto/w_${width}/`);
 
-  return newUrl;
+    return newUrl;
 };
 
 const getLast7Days = () => {
-  const currentDate = moment();
+    const currentDate = moment();
 
-  const last7Days = [];
+    const last7Days = [];
 
-  for (let i = 0; i < 7; i++) {
-    const dayDate = currentDate.clone().subtract(i, "days");
-    const dayName = dayDate.format("dddd");
+    for (let i = 0; i < 7; i++) {
+        const dayDate = currentDate.clone().subtract(i, 'days');
+        const dayName = dayDate.format('dddd');
 
-    last7Days.unshift(dayName);
-  }
+        last7Days.unshift(dayName);
+    }
 
-  return last7Days;
+    return last7Days;
 };
 
+// store the new message count in local storage to persist the count after the refresh
 const getOrSaveFromStorage = ({ key, value, get }) => {
-  if (get)
-    return localStorage.getItem(key)
-      ? JSON.parse(localStorage.getItem(key))
-      : null;
-  else localStorage.setItem(key, JSON.stringify(value));
+  if (get) {
+    const item = localStorage.getItem(key);
+    if (item) {
+      try {
+        return JSON.parse(item);
+      } catch (error) {
+        console.error(`Error parsing JSON from localStorage key "${key}":`, error);
+        return [];
+      }
+    }
+    return [];
+  } else {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error(`Error stringifying JSON for localStorage key "${key}":`, error);
+    }
+  }
 };
-
 
 export { fileFormat, transformImage, getLast7Days, getOrSaveFromStorage };

@@ -1,13 +1,14 @@
-import AdminLayout from '../../components/layout/AdminLayout'
-import { Box, Paper, Stack, Typography, Container } from '@mui/material'
 import {
   AdminPanelSettings as AdminPanelSettingsIcon,
-  Notifications as NotificationsIcon,
+  Done,
   Group as GroupIcon,
   Message as MessageIcon,
+  Notifications as NotificationsIcon,
   Person as PersonIcon
-} from '@mui/icons-material'
-import moment from 'moment'
+} from '@mui/icons-material';
+import { Box, Container, Paper, Stack, Typography } from '@mui/material';
+import moment from 'moment';
+import AdminLayout from '../../components/layout/AdminLayout';
 import {
   CurveButton,
   SearchField,
@@ -15,14 +16,31 @@ import {
 import { matBlack } from '../../constants/color';
 
 import {
-  LineChart,
-  DoughnutChart
-} from "../../specific/Chart"
-import zIndex from '@mui/material/styles/zIndex';
-
+  DoughnutChart,
+  LineChart
+} from "../../specific/Chart";
+import { useErrors } from '../../hooks/hook';
+import { Layoutloader } from '../../components/layout/loaders';
+import { useDahsboardQuery } from '../../redux/api/api';
 
 const Dashboard = () => {
 
+  const {
+    data,
+    error,
+    isLoading,
+    isError,
+  } = useDahsboardQuery();
+  
+
+  const { stats } = data || {};
+
+  useErrors([
+    {
+      isError: isError,
+      error: error,
+    },
+  ]);
   const Appbar = (
     <Paper
       elevation={3}
@@ -55,7 +73,7 @@ const Dashboard = () => {
         />
 
         <CurveButton sx={{ 
-          display: {  sm: "block" }  
+          display: {  sm: "block" }  ,
         }}>
           Search
         </CurveButton>
@@ -64,7 +82,6 @@ const Dashboard = () => {
         
         <Typography
           display={{
-            xs: "none",
             lg: "block",
           }}
           color={"rgba(0,0,0,0.7)"}
@@ -93,21 +110,22 @@ const Dashboard = () => {
       alignItems={"center"}
       margin={"2rem 0"}
     >
-      <Widget title={"Users"} value={123} Icon={<PersonIcon />} />
+      <Widget title={"Users"} value={stats?.totalUsers} Icon={<PersonIcon />} />
       <Widget
         title={"Chats"}
-        value={344}
+        value={stats?.totalChats}
         Icon={<GroupIcon />}
       />
       <Widget
         title={"Messages"}
-        value={783}
+        value={stats?.totalMessages}
         Icon={<MessageIcon />}
       />
     </Stack>
   );
   return (
     <AdminLayout>
+    {isLoading?<Layoutloader/>:
       <Container component={"main"}>
         {Appbar}
         <Stack
@@ -135,7 +153,7 @@ const Dashboard = () => {
             <Typography margin={"2rem 0"} variant="h4">
               Last Messages
             </Typography>
-            <LineChart value={[65, 59, 80, 81, 56, 55, 40]} />
+            <LineChart value={stats?.messages} />
           </Paper>
 
           <Paper
@@ -154,7 +172,7 @@ const Dashboard = () => {
               position: "relative",
             }}
           >
-            <DoughnutChart value={[300,450]} labels={["Group Chats","Individual Chats"]} />
+            <DoughnutChart value={[stats?.groupsCounts || 0,stats?.totalChats-stats?.groupsCounts || 0]} labels={["Group Chats","Individual Chats"]} />
             <Stack
               position={"absolute"}
               direction={"row"}
@@ -172,7 +190,9 @@ const Dashboard = () => {
 
         {Widgets}
       </Container>
+    }
     </AdminLayout>
+
   )
 }
 

@@ -6,22 +6,31 @@ import {
 import { blueGrey } from '@mui/material/colors';
 import { useNavigate } from "react-router-dom";
 import { bgGradient, cardGradient, darkBorder, lightBlue } from "../../constants/color";
-
-const isAdmin = true;
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { adminLogin, getAdmin } from "../../redux/thunks/admin";
+import { useEffect } from "react";
 
 export const AdminLogin = () => {
-
+  const {isAdmin} = useSelector(state => state.auth);
   const secret = useInputValidation("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isAdmin) {
+      navigate("/admin/dashboard");
+    }
+  }, [isAdmin, navigate]);
+
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Admin Logged In", secret.value);
+    dispatch(adminLogin(secret.value));
   };
 
-  if(isAdmin) {
-    return navigate("/admin/dashboard");
-  }
+  useEffect(() => {
+    dispatch(getAdmin());
+  }, [dispatch]);
 
   return (
     <Box sx={{
@@ -62,7 +71,7 @@ export const AdminLogin = () => {
               fullWidth
               required
               type="password"
-              label="Password"
+              label="Secret Key"
               margin="normal"
               value={secret.value}
               onChange={secret.changeHandler}

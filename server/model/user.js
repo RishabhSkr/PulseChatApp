@@ -8,6 +8,11 @@ const userSchema = new Schema({
         required: true,
 
     },
+    bio:{
+        type: String,
+        required: true,
+        default: "Hey there! I am using PulseChat"
+    },
     username: {
         type: String,
         required: true,
@@ -36,7 +41,7 @@ const userSchema = new Schema({
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
-        next();
+       return next();
     }
     this.password = await bcrypt.hash(this.password, 10);
 });

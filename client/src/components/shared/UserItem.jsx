@@ -4,7 +4,6 @@ import { transformImage } from '../../lib/features';
 
 const UserItem = ({ user, handler, handlerIsLoading, isAdded = false, sx = {} }) => {
     const { name, _id, avatar } = user;
-    // console.log(user);
     return (
         <ListItem sx={{ 
             '&:hover': { 

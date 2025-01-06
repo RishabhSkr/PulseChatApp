@@ -12,6 +12,8 @@ import {
 } from '@mui/icons-material';
 import { Link as LinkComponent, useLocation, useNavigate } from 'react-router-dom';
 import { matBlack } from '../../constants/color';
+import { useDispatch, useSelector } from 'react-redux';
+import { adminLogout } from '../../redux/thunks/admin';
 
 const Link = styled(LinkComponent)`
   text-decoration: none;
@@ -47,9 +49,10 @@ const adminTabs = [
 
 const Sidebar = ({ w = "100%" }) => {
 
+  const dispatch = useDispatch();
   const location = useLocation();
   const logoutHandler = () => {
-    console.log('Logout')
+    dispatch(adminLogout());
   }
 
   return (
@@ -93,19 +96,18 @@ const Sidebar = ({ w = "100%" }) => {
   )
 }
 
-const isAdmin = true;
 
 const AdminLayout = ({ children }) => {
-  const [isMobileOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
- 
+  const [isMobile, setIsMobile] = useState(false);
+  const { isAdmin } = useSelector((state) => state.auth);
+
   if(!isAdmin) {
     return navigate('/admin');
   }
-  const handleMobileMenuOpen = () => {
-    setMobileMenuOpen(!isMobileOpen)
-    console.log('Mobile menu open')
-  }
+
+  const handleMobile = () => setIsMobile(!isMobile);
+  const handleClose = () => setIsMobile(false);
   return (
 
     <Grid container sx={{ minHeight: '100vh' }}>
@@ -123,9 +125,9 @@ const AdminLayout = ({ children }) => {
           
         }}
       >
-        <IconButton onClick={handleMobileMenuOpen}
+        <IconButton onClick={handleMobile}
         >
-          {isMobileOpen ? <CloseIcon /> : <MenuIcon />}
+          {isMobile ? <CloseIcon /> : <MenuIcon />}
         </IconButton>
       </Box>
 
@@ -155,7 +157,7 @@ const AdminLayout = ({ children }) => {
       </Grid>
 
         
-      <Drawer open={isMobileOpen} onClose={handleMobileMenuOpen}>
+      <Drawer open={isMobile} onClose={handleClose}>
         <Sidebar w={"50vh"} />
       </Drawer>
 

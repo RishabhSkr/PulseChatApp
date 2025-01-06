@@ -1,9 +1,17 @@
-import React from 'react'
 import { Link } from 'react-router-dom';
-import HeroImage from '../../assets/Hero.svg';  // Add this import
+import HeroImage from '../../assets/Hero.svg';
+import { useSelector } from 'react-redux';
+import Logo from '../shared/Logo';
+
 const Hero = () => {
+  const {user} = useSelector((state) => state.auth);
   return (
     <section className="bg-gray-900 text-white">
+      <div className="flex justify-start items-center px-6 pt-6">
+        <Link to={'/'}>
+          <Logo />
+        </Link>
+      </div>
       <div className="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
         <div className=" mr-auto place-self-center lg:col-span-7 lg: mt-16">
           <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl">
@@ -15,7 +23,8 @@ const Hero = () => {
           </p>
           
           <div className="flex flex-wrap gap-4">
-           
+            {!user ? (
+              <>
                 <Link
                   to="/login"
                   className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-800"
@@ -32,7 +41,9 @@ const Hero = () => {
                 >
                   Register
                 </Link>
-            
+              </>
+
+            ) : (
               <Link
                 to="/chathome"
                 className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-800"
@@ -42,9 +53,10 @@ const Hero = () => {
                   <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
                 </svg>
               </Link>
+            )}         
+
           </div>
         </div>
-        
         <div className="hidden  lg:mt-0 lg:col-span-5 lg:flex">
           <img src={HeroImage} alt="Chat App Interface"/>
         </div>

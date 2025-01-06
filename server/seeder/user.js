@@ -20,7 +20,6 @@ const createUser = async (numUsers) => {
         }
 
         await Promise.all(usersPromise);
-        console.log("Users created:", numUsers);
         // Use 0 for successful exit
         process.exit(0);
     } catch (error) {

@@ -42,7 +42,12 @@ const io = new Server(httpServer, {
 // saved the instace of io in app
 app.set("io", io);
 
+// Add CORS middleware before any routes
 app.use(cors(corsOptions));
+
+// Enable pre-flight requests
+app.options('*', cors(corsOptions));
+
 app.use(express.json());
 app.use(cookieParser());
 

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { SERVER_URL } from './constants/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { userExist, userNotExist } from './redux/reducers/auth';
-import { Layoutloader } from './components/layout/loaders';
+import { CommonLoader } from './components/layout/loaders';
 import { Toaster } from 'react-hot-toast';
 import {SocketProvider }from './socket';
 
@@ -43,9 +43,11 @@ function App() {
             });
     }, [dispatch]);
 
-    return isLoading ? (
-        <Layoutloader />
-    ) : (
+    if (isLoading) {
+        return <CommonLoader />;
+    }
+
+    return (
         <Router>
             <Toaster
                 position="top-center"
@@ -58,7 +60,7 @@ function App() {
                     },
                 }}
             />
-            <Suspense fallback={<Layoutloader />}>
+            <Suspense fallback={<CommonLoader />}>
                 <Routes>
                     <Route path="/" element={<Landing />} />
                     <Route

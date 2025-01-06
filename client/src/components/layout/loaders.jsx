@@ -74,10 +74,10 @@ const Layoutloader = () => {
         <div className="p-4 space-y-4">
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full animate-pulse bg-gray-200 dark:bg-gray-700" />
+              <div className="w-10 h-10 rounded-full animate-pulse bg-gray-700 dark:bg-gray-200" />
               <div className="flex-1 space-y-2">
-                <div className="h-3 w-3/4 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
-                <div className="h-2 w-1/2 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
+                <div className="h-3 w-3/4 animate-pulse bg-gray-700 dark:bg-gray-200 rounded" />
+                <div className="h-2 w-1/2 animate-pulse bg-gray-700 dark:bg-gray-200 rounded" />
               </div>
             </div>
           ))}
@@ -85,26 +85,26 @@ const Layoutloader = () => {
       </div>
 
       {/* Main Chat Area Shimmer */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col bg-gray-700">
         {/* Chat Header */}
-        <div className="h-16 border-b border-gray-200 dark:border-gray-700 flex items-center px-4">
+        <div className="h-16 border-b border-gray-200 flex items-center px-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full animate-pulse bg-gray-200 dark:bg-gray-700" />
+            <div className="w-10 h-10 rounded-full animate-pulse bg-gray-300" />
             <div className="space-y-2">
-              <div className="h-3 w-32 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
-              <div className="h-2 w-24 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
+              <div className="h-3 w-32 animate-pulse bg-gray-300  rounded" />
+              <div className="h-2 w-24 animate-pulse bg-gray-300  rounded" />
             </div>
           </div>
         </div>
 
         {/* Chat Messages */}
-        <div className="flex-1 p-4 space-y-4">
+        <div className="flex-1 p-4 space-y-4 bg-gray-700">
           {[1, 2, 3].map((i) => (
             <div key={i} className={`flex ${i % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
               <div className="max-w-[70%] space-y-2">
-                <div className="h-4 w-48 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
-                <div className="h-4 w-64 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
-                <div className="h-4 w-32 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
+                <div className="h-4 w-32 animate-pulse bg-gray-200 rounded" />
+                <div className="h-4 w-40 animate-pulse bg-gray-200 rounded" />
+                <div className="h-4 w-24 animate-pulse bg-gray-200 rounded" />
               </div>
             </div>
           ))}
@@ -112,14 +112,14 @@ const Layoutloader = () => {
 
         {/* Chat Input */}
         <div className="h-20 border-t border-gray-200 dark:border-gray-700 p-4">
-          <div className="h-full w-full rounded-lg animate-pulse bg-gray-200 dark:bg-gray-700" />
+          <div className="h-full w-full rounded-lg animate-pulse bg-gray-800 dark:bg-gray-400" />
         </div>
       </div>
 
       {/* Right Sidebar Shimmer */}
-      <div className="w-[250px] border-l border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+      <div className="w-[250px] border-l border-gray-700 dark:border-gray-200 bg-gray-50 dark:bg-gray-800">
         <div className="p-4 space-y-4">
-          <div className="h-4 w-3/4 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
+          <div className="h-4 w-3/4 animate-pulse bg-gray-700 dark:bg-gray-200 rounded" />
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
               <div key={i} className="h-10 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
@@ -131,5 +131,120 @@ const Layoutloader = () => {
   );
 };
 
-export { Layoutloader, TypingLoader};
+const DrawerSkeleton = () => {
+  return (
+    <div className="flex h-screen w-full">
+      {/* Sidebar Skeleton */}
+      <div className="w-72 h-full bg-gray-200 dark:bg-gray-700 p-4 space-y-4 border-r border-gray-300 dark:border-gray-600">
+        <div className="h-8 w-3/4 animate-pulse bg-gray-300 dark:bg-gray-800 rounded" />
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="h-10 animate-pulse bg-gray-300 dark:bg-gray-800 rounded" />
+        ))}
+      </div>
+
+      {/* Content Skeleton */}
+      <div className="flex-1 p-6 bg-gray-800 dark:bg-gray-500 space-y-6">
+        {/* Header skeleton */}
+        <div className="h-8 w-1/3 animate-pulse bg-gray-700 dark:bg-gray-300 rounded" />
+        
+        {/* Content blocks */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="p-4 bg-gray-700 rounded-lg space-y-3">
+              <div className="h-4 w-3/4 animate-pulse bg-gray-700 rounded" />
+              <div className="h-4 w-1/2 animate-pulse bg-gray-700  rounded" />
+              <div className="h-20 animate-pulse bg-gray-700  rounded" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MobileDrawerLoader = () => {
+  return (
+    <div className="w-full h-full bg-white dark:bg-gray-900 p-4">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-8 h-8 rounded-full animate-pulse bg-gray-200 dark:bg-gray-700" />
+        <div className="h-4 w-24 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
+      </div>
+      
+      
+      {/* Chat list */}
+      <div className="space-y-4">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full animate-pulse bg-gray-200 dark:bg-gray-700" />
+            <div className="flex-1 space-y-2">
+              <div className="h-3 w-3/4 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
+              <div className="h-2 w-1/2 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ChatDetailsLoader = () => {
+  return (
+    <div className="flex h-screen">
+
+    {/* Main Chat Area Shimmer */}
+    <div className="flex-1 flex flex-col bg-gray-800">
+      {/* Chat Header */}
+      <div className="h-16 border-b border-gray-200 flex items-center px-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full animate-pulse bg-gray-300" />
+          <div className="space-y-2">
+            <div className="h-3 w-32 animate-pulse bg-gray-300  rounded" />
+            <div className="h-2 w-24 animate-pulse bg-gray-300  rounded" />
+          </div>
+        </div>
+      </div>
+
+      {/* Chat Messages */}
+      <div className="flex-1 p-4 space-y-4 bg-gray-700">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className={`flex ${i % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
+            <div className="max-w-[70%] space-y-2">
+              <div className="h-4 w-32 animate-pulse bg-gray-300 rounded" />
+              <div className="h-4 w-40 animate-pulse bg-gray-300 rounded" />
+              <div className="h-4 w-24 animate-pulse bg-gray-300 rounded" />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Chat Input */}
+      <div className="h-20 border-t rounded border-gray-400  p-4">
+        <div className="h-full w-full rounded-lg animate-pulse bg-gray-800 dark:bg-gray-600" />
+      </div>
+    </div>
+
+   
+  </div>
+  );
+}
+
+const CommonLoader = () => {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-900">
+      <div className="space-y-6 text-center">
+        <div className="relative w-16 h-16 mx-auto">
+          <div className="w-16 h-16 rounded-full absolute border-4 border-gray-200 dark:border-gray-700"></div>
+          <div className="w-16 h-16 rounded-full absolute border-4 border-blue-500 border-t-transparent animate-spin"></div>
+        </div>
+        <div className="space-y-3">
+          <div className="h-4 w-24 mx-auto animate-pulse bg-gray-200 dark:bg-gray-700 rounded"></div>
+          <div className="h-3 w-32 mx-auto animate-pulse bg-gray-100 dark:bg-gray-800 rounded"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export { Layoutloader, TypingLoader, DrawerSkeleton, MobileDrawerLoader, ChatDetailsLoader, CommonLoader };
 

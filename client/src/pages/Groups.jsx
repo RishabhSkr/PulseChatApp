@@ -23,7 +23,7 @@ import PropTypes from 'prop-types';
 import { Suspense, lazy, memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Layoutloader } from '../components/layout/loaders';
+import {  DrawerSkeleton } from '../components/layout/loaders';
 import AvatarCard from '../components/shared/AvatarCard';
 import UserItem from '../components/shared/UserItem';
 import { Link } from '../components/styles/StyledComponent';
@@ -282,142 +282,154 @@ const Groups = () => {
         </Stack>
     );
 
-    return myGroups.isLoading ? (
-        <Layoutloader />
-    ) : (
-        <Grid
-            container
-            height={'100vh'}
-            sx={{
-                background: bgGradient,
-                color: 'white',
-            }}
-        >
-            <Grid
-                item
-                sx={{
-                    display: { xs: 'none', sm: 'block' },
-                    borderRight: `1px solid ${darkBorder}`,
-                    bgcolor: `${matBlack}95`,
-                }}
-                sm={4}
-            >
-                <GroupsList myGroups={myGroups?.data?.groups} chatId={chatId} />
-            </Grid>
+    return (
+        <>
+            {/* Show DrawerSkeleton when groups are loading */}
+            {myGroups.isLoading ? (
+                <DrawerSkeleton />
+            ) : (
+                <Grid
+                    container
+                    height={'100vh'}
+                    sx={{
+                        background: bgGradient,
+                        color: 'white',
+                    }}
+                >
+                    {/* Left sidebar */}
+                    <Grid
+                        item
+                        sx={{
+                            display: { xs: 'none', sm: 'block' },
+                            borderRight: `1px solid ${darkBorder}`,
+                            bgcolor: `${matBlack}95`,
+                        }}
+                        sm={4}
+                    >
+                        <GroupsList myGroups={myGroups?.data?.groups} chatId={chatId} />
+                    </Grid>
 
-            <Grid
-                item
-                xs={12}
-                sm={8}
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    position: 'relative',
-                    padding: '1rem 3rem',
-                    background: cardGradient,
-                }}
-            >
-                {IconBtns}
+                    {/* Right content area */}
+                    <Grid
+                        item
+                        xs={12}
+                        sm={8}
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            position: 'relative',
+                            padding: '1rem 3rem',
+                            background: cardGradient,
+                        }}
+                    >
+                        {IconBtns}
+                        
+                        {/* Show loading state for group details */}
+                        {groupDetails.isLoading ? (
+                            <CircularProgress sx={{ mt: 4 }} />
+                        ) : groupName && (
+                            <>
+                                {GroupName}
 
-                {groupName && (
-                    <>
-                        {GroupName}
+                                <Typography
+                                    margin={'2rem'}
+                                    alignSelf={'flex-start'}
+                                    variant="body1"
+                                    color="white"
+                                >
+                                    Members
+                                </Typography>
 
-                        <Typography
-                            margin={'2rem'}
-                            alignSelf={'flex-start'}
-                            variant="body1"
-                            color="white"
-                        >
-                            Members
-                        </Typography>
-
-                        <Stack
-                            maxWidth={'45rem'}
-                            width={'100%'}
-                            boxSizing={'border-box'}
-                            padding={{
-                                sm: '1rem',
-                                xs: '0',
-                                md: '1rem 4rem',
-                            }}
-                            spacing={'2rem'}
-                            height={'50vh'}
-                            overflow={'auto'}
-                            sx={{
-                                background: `${darkPrimary}95`,
-                                backdropFilter: 'blur(12px)',
-                                borderRadius: '1rem',
-                                border: `1px solid ${darkBorder}`,
-                                boxShadow: `0 0 20px ${matBlack}50`,
-                            }}
-            >
-                {isLoadingRemoveMember ? <CircularProgress /> : members.map(user => (
-                                <UserItem
-                                    key={user._id}
-                                    user={user}
-                                    isAdded
-                                    sx={{
-                                        background: highlightGradient,
-                                        transition: 'all 0.3s ease',
-                                        borderRadius: '0.5rem',
-                                        '& .MuiTypography-root': {
-                                            color: 'white',
-                                        },
-                                        '&:hover': {
-                                            transform: 'translateX(8px)',
-                                            background: `${lightBlue}20`,
-                                        },
+                                <Stack
+                                    maxWidth={'45rem'}
+                                    width={'100%'}
+                                    boxSizing={'border-box'}
+                                    padding={{
+                                        sm: '1rem',
+                                        xs: '0',
+                                        md: '1rem 4rem',
                                     }}
-                                    handler={removeMemberHandler}
-                                />
-                            ))}
-                        </Stack>
-                        {ButtonGroup}
-                    </>
-                )}
-            </Grid>
-            {/* AddMember Dialog */}
-            {isAddMember && (
-                <Suspense fallback={<Backdrop open={true} />}>
-                    <AddMemberDialog
-                      
-                        onClose={closeAddMemberHandler}
-                        chatId={chatId}
-                    />
-                </Suspense>
-            )}
+                                    spacing={'2rem'}
+                                    height={'50vh'}
+                                    overflow={'auto'}
+                                    sx={{
+                                        background: `${darkPrimary}95`,
+                                        backdropFilter: 'blur(12px)',
+                                        borderRadius: '1rem',
+                                        border: `1px solid ${darkBorder}`,
+                                        boxShadow: `0 0 20px ${matBlack}50`,
+                                    }}
+                                >
+                                    {isLoadingRemoveMember ? <CircularProgress /> : members.map(user => (
+                                        <UserItem
+                                            key={user._id}
+                                            user={user}
+                                            isAdded
+                                            sx={{
+                                                background: highlightGradient,
+                                                transition: 'all 0.3s ease',
+                                                borderRadius: '0.5rem',
+                                                '& .MuiTypography-root': {
+                                                    color: 'white',
+                                                },
+                                                '&:hover': {
+                                                    transform: 'translateX(8px)',
+                                                    background: `${lightBlue}20`,
+                                                },
+                                            }}
+                                            handler={removeMemberHandler}
+                                        />
+                                    ))}
+                                </Stack>
+                                {ButtonGroup}
+                            </>
+                        )}
+                    </Grid>
 
-            {/* Confirm Delete Dialog */}
-            {confirmDeleteDialog && (
-                <Suspense fallback={<Backdrop open={true} />}>
-                    <ConfirmDeleteDialog
-                        open={confirmDeleteDialog}
-                        handleClose={closeConfirmDeleteHandler}
-                        deleteHandler={deleteHandler}
-                    />
-                </Suspense>
-            )}
+                    {/* ...existing dialogs and drawer... */}
+                    {/* AddMember Dialog */}
+                    {isAddMember && (
+                        <Suspense fallback={<Backdrop open={true} />}>
+                            <AddMemberDialog
+                              
+                                onClose={closeAddMemberHandler}
+                                chatId={chatId}
+                            />
+                        </Suspense>
+                    )}
 
-            <Drawer
-                sx={{
-                    display: {
-                        xs: 'block',
-                        sm: 'none',
-                    },
-                }}
-                open={isMobileMenuOpen}
-                onClose={handleMobileClose}
-            >
-                <GroupsList
-                    w={'50vw'}
-                    myGroups={myGroups?.data?.groups}
-                    chatId={chatId}
-                    
-                />
-            </Drawer>
-        </Grid>
+                    {/* Confirm Delete Dialog */}
+                    {confirmDeleteDialog && (
+                        <Suspense fallback={<Backdrop open={true} />}>
+                            <ConfirmDeleteDialog
+                                open={confirmDeleteDialog}
+                                handleClose={closeConfirmDeleteHandler}
+                                deleteHandler={deleteHandler}
+                            />
+                        </Suspense>
+                    )}
+
+                    <Drawer
+                        sx={{
+                            display: {
+                                xs: 'block',
+                                sm: 'none',
+                            },
+                        }}
+                        open={isMobileMenuOpen}
+                        onClose={handleMobileClose}
+                    >
+                        <GroupsList
+                            w={'50vw'}
+                            myGroups={myGroups?.data?.groups}
+                            chatId={chatId}
+                            
+                        />
+                    </Drawer>
+                </Grid>
+            )}
+        </>
     );
 };
 

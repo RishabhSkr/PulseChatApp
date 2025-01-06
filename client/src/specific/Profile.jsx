@@ -9,16 +9,34 @@ import moment from "moment";
 
 const Profile = ({ user }) => {
   return (
-    <Stack spacing={"2rem"} direction={"column"} alignItems={"center"}>
+    <Stack 
+      spacing={"2rem"} 
+      direction={"column"} 
+      alignItems={"center"}
+      sx={{
+        width: '100%',
+        maxWidth: '100%',
+        p: 2
+      }}
+    >
       <Avatar
         src={user?.avatar?.url}
         sx={{
-          width: 150,
-          height: 150,
+          width: {
+            xs: '100px',
+            sm: '120px',
+            md: '150px',
+            lg: '200px'
+          },
+          height: {
+            xs: '100px',
+            sm: '120px',
+            md: '150px',
+            lg: '200px'
+          },
           objectFit: "contain", 
           marginBottom: "1rem",
           border: "5px solid white",
-          flexGrow: 1,
         }}
       />
       <ProfileCard heading={"Bio"} text={user?.bio} />

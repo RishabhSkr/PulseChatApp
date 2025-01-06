@@ -14,19 +14,19 @@ function Home() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-gray-700 p-4 sm:p-6 rounded-lg hover:bg-gray-600 transition-colors">
+          <div className="bg-gray-700 p-4 sm:p-6 rounded-lg transition-colors">
             <FaUserFriends className="text-3xl sm:text-4xl mx-auto mb-3 sm:mb-4 text-blue-400" />
             <h3 className="text-lg sm:text-xl font-semibold mb-2">Add Friends</h3>
             <p className="text-xs sm:text-sm text-gray-400">Connect with your contacts</p>
           </div>
 
-          <div className="bg-gray-700 p-4 sm:p-6 rounded-lg hover:bg-gray-600 transition-colors">
+          <div className="bg-gray-700 p-4 sm:p-6 rounded-lg transition-colors">
             <FaComments className="text-3xl sm:text-4xl mx-auto mb-3 sm:mb-4 text-green-400" />
             <h3 className="text-lg sm:text-xl font-semibold mb-2">Start Chat</h3>
             <p className="text-xs sm:text-sm text-gray-400">Begin a new conversation</p>
           </div>
 
-          <div className="bg-gray-700 p-4 sm:p-6 rounded-lg hover:bg-gray-600 transition-colors sm:col-span-2 md:col-span-1">
+          <div className="bg-gray-700 p-4 sm:p-6 rounded-lg transition-colors sm:col-span-2 md:col-span-1">
             <FaCog className="text-3xl sm:text-4xl mx-auto mb-3 sm:mb-4 text-purple-400" />
             <h3 className="text-lg sm:text-xl font-semibold mb-2">Settings</h3>
             <p className="text-xs sm:text-sm text-gray-400">Customize your experience</p>

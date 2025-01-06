@@ -1,5 +1,4 @@
-import { Button, Dialog, DialogTitle, Stack, Typography } from '@mui/material'
-import { sampleUsers } from '../constants/sampleData'
+import { Button, CircularProgress, Dialog, DialogTitle, Stack, Typography } from '@mui/material'
 import UserItem from '../components/shared/UserItem'
 import { darkBorder,cardGradient,lightBlue,highlightGradient} from "../constants/color";
 import { useState } from 'react'
@@ -7,7 +6,6 @@ import { useAsyncMutation, useErrors } from '../hooks/hook';
 import { useAddGroupMembersMutation, useAvailableFriendsQuery } from '../redux/api/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsAddMember } from '../redux/reducers/misc';
-import { Layoutloader } from '../components/layout/loaders';
 
 const AddMemberDialog =  ({chatId }) => {
     const dispatch = useDispatch();
@@ -52,7 +50,7 @@ const AddMemberDialog =  ({chatId }) => {
                     Add Member
                 </DialogTitle>
                 <Stack spacing={1}>
-                    {isLoading ? <Layoutloader/> : data?.friends?.length> 0 ? (
+                    {isLoading ? <CircularProgress/> : data?.friends?.length> 0 ? (
                         data?.friends?.map((user) => (
                             <UserItem 
                                 key={user._id} 

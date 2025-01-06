@@ -10,7 +10,7 @@ import {
     setIsMobileMenuChats,
     setSelectDeleteChat,
 } from '../../redux/reducers/misc';
-import { Drawer, Tooltip } from '@mui/material';
+import { Backdrop, Drawer, Tooltip } from '@mui/material';
 import Logo from '../shared/Logo';
 import { useErrors, useSocketEvents } from '../../hooks/hook';
 import { getSocket } from '../../socket';
@@ -26,7 +26,8 @@ import {
 import { getOrSaveFromStorage } from '../../lib/features';
 import { ONLINE_USERS, REFETCH_CHATS } from '../../constants/events';
 import DeleteChatMenu from '../../dialog/DeleteChatMenu';
-import { AccountCircle, ChevronLeft, ChevronRight } from '@mui/icons-material';
+import {  ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { MobileDrawerLoader } from './loaders';
 
 const AppLayout = () => WrrapperComponent => {
     const LayoutWrapper = props => {
@@ -104,7 +105,7 @@ const AppLayout = () => WrrapperComponent => {
                 />
 
                 {isLoading ? (
-                    <p>Loading.....</p>
+                    <Backdrop open />
                 ) : (
                     <Drawer
                         sx={{
@@ -136,9 +137,8 @@ const AppLayout = () => WrrapperComponent => {
 
                 <div className="flex flex-grow h-[calc(100vh-4rem)] w-full overflow-hidden">
                     <div className="hidden sm:block sm:w-1/4 border-r border-gray-200 bg-gradient-to-b from-[#1D283A] to-[#0F172A]">
-                        {isLoading ? (
-                            <p>Loading.....</p>
-                        ) : (
+                        {isLoading ?  <MobileDrawerLoader/>
+                         : (
                             <ChatList
                                 chats={data?.chats}
                                 chatId={chatId}
@@ -178,7 +178,7 @@ const AppLayout = () => WrrapperComponent => {
                     </div>
 
                     <div className={`transition-all duration-300 bg-gradient-to-b from-[#1D283A] to-[#0F172A] border-l border-gray-200 
-                        ${isProfileVisible ? 'w-1/4' : 'w-0 overflow-hidden'}`}>
+                        ${isProfileVisible ? 'w-1/4 min-w-[250px] p-3 sm:p-4' : 'w-0 overflow-hidden'}`}>
                         <Profile user={user} />
                     </div>
                 </div>

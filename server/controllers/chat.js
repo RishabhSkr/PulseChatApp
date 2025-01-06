@@ -418,7 +418,6 @@ const deleteChat = TryCatch(async (req, res, next) => {
     if (!chat) return next(new ErrorHandler('Chat not found', 404));
 
     const members = chat.members;
-
     if (chat.groupChat && chat.creator.toString() !== req.user.toString())
         return next(
             new ErrorHandler('You are not allowed to delete the group', 403)
@@ -435,10 +434,11 @@ const deleteChat = TryCatch(async (req, res, next) => {
         chat: chatId,
         attachments: { $exists: true, $ne: [] },
     });
+    console.log(messagesWithAttachments);
     const publicIds = [];
-    messagesWithAttachments.forEach(attachments => {
-        attachments.forEach(({ public_id }) => {
-            publicIds.push(public_id);
+    messagesWithAttachments.forEach(message => {
+        message.attachments.forEach(attachment => {
+            publicIds.push(attachment.public_id);
         });
     });
     await Promise.all([

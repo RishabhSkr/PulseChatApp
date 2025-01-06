@@ -3,7 +3,6 @@ import { Link } from "../styles/StyledComponent";
 import { Box, Stack, Typography } from "@mui/material";
 import AvatarCard from "./AvatarCard";
 import { motion } from "framer-motion";
-import PropTypes from 'prop-types';
 
 const ChatItem = ({
   avatar = [],

@@ -16,8 +16,7 @@ import { useInfiniteScrollTop } from '6pp';
 import { useDispatch } from 'react-redux';
 import { setIsFileMenu } from '../redux/reducers/misc';
 import { removeNewMessagesAlert } from '../redux/reducers/chat';
-import { TypingLoader } from '../components/layout/loaders';
-import { use } from 'react';
+import {  ChatDetailsLoader, Layoutloader, TypingLoader } from '../components/layout/loaders';
 import { useNavigate } from 'react-router-dom';
 import { messageBgPattern } from '../constants/color';
 
@@ -160,10 +159,8 @@ const Chat = ({ chatId, user }) => {
             return dateA - dateB;
         });
     }, [oldMessages, messages]);
-
-    return chatDetails.isLoading ? (
-        <div>Loading...</div>
-    ) : (
+    
+    return chatDetails.isLoading ? <ChatDetailsLoader /> : (
         <div className="flex flex-col h-full">
             {/* Messages Container */}
             <Stack

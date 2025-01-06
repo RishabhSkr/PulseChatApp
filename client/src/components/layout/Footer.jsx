@@ -6,7 +6,7 @@ const Footer = () => {
           Made with <span className="text-red-500">❤️</span> by Rishabh Sonkar
         </p>
         <p className="text-xs text-gray-400 mt-1">
-          © {new Date().getFullYear()} SwiftChat. All rights reserved.
+          © {new Date().getFullYear()} PulseChat. All rights reserved.
         </p>
       </div>
     </footer>

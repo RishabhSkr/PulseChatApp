@@ -1,8 +1,8 @@
 import {Helmet} from 'react-helmet-async';
 
 export const Title = ({
-  title = "Chat App",
-  discription="This is a chat app"
+  title = "Pulse Chat App",
+  discription="Chat seamlessly with your friends and family"
 }) => {
   return (
     <Helmet>

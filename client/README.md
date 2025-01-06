@@ -1,6 +1,9 @@
-# Pulse Chat App - Client
+# Pulse Chat App - Client Live Demo
+
+[Live Demo](https://pulse-chat-app.vercel.app/)
 
 This is the client side of the Pulse Chat App. It is built using React and Vite.
+
 
 ## Getting Started
 

@@ -13,6 +13,7 @@ const initialState = {
         chatId: "",
         groupChat: false,
     },
+    isProfileVisible: false,
 };
 
 const miscSlice = createSlice({
@@ -40,12 +41,16 @@ const miscSlice = createSlice({
         setIsDeleteMenu: (state, action) => {
             state.isDeleteMenu = action.payload;
         },
-        setUpdloadingLoader: (state, action) => {
+        setUploadingLoader: (state, action) => {
             state.updloadingLoader = action.payload;
         },
         setSelectDeleteChat: (state, action) => {
-            state.selectedDeleteChat = action.payload;  // changed from selectDeleteChat
+            state.selectedDeleteChat = action.payload;  
         },
+        setIsProfileVisible: (state, action) => {
+            state.isProfileVisible = action.payload;
+        },
+
     },
 });
 
@@ -57,8 +62,9 @@ export const {
     setIsSearch,
     setIsFileMenu,
     setIsDeleteMenu,
-    setUpdloadingLoader,
+    setUploadingLoader,
     setSelectDeleteChat,
+    setIsProfileVisible,
 } = miscSlice.actions;
 
 export default miscSlice;

@@ -8,9 +8,11 @@ import {
 } from '@mui/icons-material';
 import {
     AppBar,
+    Avatar,
     Backdrop,
     Badge,
     Box,
+    Button,
     CircularProgress,
     IconButton,
     Toolbar,
@@ -18,7 +20,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -34,14 +36,19 @@ import {
     setIsNotification,
     setIsSearch,
     setIsNewGroup,
+    setIsProfileVisible,
 } from '../../redux/reducers/misc';
 import { resetNotificationCount } from '../../redux/reducers/chat';
+import AvatarCard from '../shared/AvatarCard';
 
 const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { isSearch, isNotification, isNewGroup } = useSelector(state => state.misc);
+    const { isSearch, isNotification, isNewGroup,isProfileVisible } = useSelector(
+        state => state.misc
+    );
     const { notificationCount } = useSelector(state => state.chat);
+    const { user } = useSelector(state => state.auth);
 
     const navigateToGroup = () => {
         navigate('/groups');
@@ -78,7 +85,10 @@ const Header = () => {
             );
         }
     };
-
+    const toggleProfile = () => {
+        // Replace the local state update with Redux dispatch
+        dispatch(setIsProfileVisible(!isProfileVisible));
+    };
     return (
         <>
             <Box sx={{ flexGrow: 1 }} height={'4rem'}>
@@ -144,6 +154,22 @@ const Header = () => {
                                 onClick={logoutHandler}
                             />
                         </Box>
+                            <Tooltip title={isProfileVisible ? "Hide Profile" : "Show Profile"}>
+                            <IconButton 
+                                onClick={toggleProfile}
+                                sx={{
+                                    ml: 1,
+                                    padding: '4px',
+                                    transition: 'transform 0.2s',
+                                    '&:hover': {
+                                        transform: 'scale(1.1)',
+                                    },
+                                    
+                                }}
+                            >
+                                <AvatarCard src={user?.avatar?.url} w={"2.5rem"} h ={"2.5rem"} />
+                            </IconButton>
+                        </Tooltip>
                     </Toolbar>
                 </AppBar>
             </Box>
@@ -214,7 +240,6 @@ const IconBtn = ({ title, icon, onClick, value }) => {
         </Tooltip>
     );
 };
-
 IconBtn.propTypes = {
     title: PropTypes.string.isRequired,
     icon: PropTypes.node.isRequired,

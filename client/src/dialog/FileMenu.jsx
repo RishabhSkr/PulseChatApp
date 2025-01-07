@@ -1,6 +1,6 @@
 import { ListItemText, Menu, MenuItem, MenuList, Tooltip } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsFileMenu, setUpdloadingLoader } from '../redux/reducers/misc';
+import { setIsFileMenu, setUploadingLoader } from '../redux/reducers/misc';
 import {
     Image as ImageIcon,
     AudioFile as AudioIcon,
@@ -12,7 +12,6 @@ import {toast} from 'react-hot-toast'
 import { useSendAttachmentsMutation } from "../redux/api/api";
 
 const FileMenu = ({ anchorEl,chatId }) => {
-    const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100MB max size
     const { isFileMenu } = useSelector(state => state.misc);
     const dispatch = useDispatch();
     const [sendAttachments] =useSendAttachmentsMutation();
@@ -29,47 +28,20 @@ const FileMenu = ({ anchorEl,chatId }) => {
     const selectVideo = () => videoRef.current?.click();
     const selectFile = () => fileRef.current?.click();
 
-    const fileChageHandler = async (e, key) => {
+    const fileChangeHandler = async (e, key) => {
       const files = Array.from(e.target.files);
-
+  
       if (files.length <= 0) return;
-
-      // Add file size validation for videos
-      if (key === 'Videos') {
-        const isValidSize = files.every(file => file.size <= MAX_VIDEO_SIZE);
-        if (!isValidSize) {
-          return toast.error('Video file size should be less than 100MB');
-        }
-      }
-
-      // Add file type validation
-      const isValid = files.every(file => {
-        switch(key) {
-          case 'Audios':
-            return file.type.startsWith('audio/');
-          case 'Images':
-            return file.type.startsWith('image/');
-          case 'Videos':
-            return file.type.includes('video/');  // Changed from startsWith to includes
-          default:
-            return true;
-        }
-      });
-
-      if (!isValid) {
-        return toast.error(`Please select only ${key.toLowerCase()} files`);
-      }
   
       if (files.length > 5)
         return toast.error(`You can only send 5 ${key} at a time`);
   
-      dispatch(setUpdloadingLoader(true));
-   
+      dispatch(setUploadingLoader(true));
+  
       const toastId = toast.loading(`Sending ${key}...`);
       closeFileMenu();
   
       try {
-           // Sending Here
         const myForm = new FormData();
   
         myForm.append("chatId", chatId);
@@ -78,17 +50,16 @@ const FileMenu = ({ anchorEl,chatId }) => {
         const res = await sendAttachments(myForm);
   
         if (res.data) toast.success(`${key} sent successfully`, { id: toastId });
-        else {
-          toast.error(`Failed to send ${key},${res.error?.data?.message}`, { id: toastId });
-        }
+        else toast.error(`Failed to send ${key}`, { id: toastId });
   
         // Fetching Here
       } catch (error) {
         toast.error(error, { id: toastId });
       } finally {
-        dispatch(setUpdloadingLoader(false));
+        dispatch(setUploadingLoader(false));
       }
     };
+  
     return (
         <Menu anchorEl={anchorEl} open={isFileMenu} onClose={closeFileMenu}>
             <div className="w-32">
@@ -103,7 +74,7 @@ const FileMenu = ({ anchorEl,chatId }) => {
                             multiple
                             accept="image/png image/jpeg image/gif"
                             style={{ display: 'none' }}
-                            onChange={e => fileChageHandler(e, 'Images')}
+                            onChange={e => fileChangeHandler(e, 'Images')}
                             ref={imageRef}
                         />
                     </MenuItem>
@@ -118,7 +89,7 @@ const FileMenu = ({ anchorEl,chatId }) => {
                             multiple
                             accept="audio/mpeg audio/wav audio/mp3 audio/ogg"
                             style={{ display: 'none' }}
-                            onChange={e => fileChageHandler(e, 'Audios')}
+                            onChange={e => fileChangeHandler(e, 'Audios')}
                             ref={audioRef}
                         />
                     </MenuItem>
@@ -133,7 +104,7 @@ const FileMenu = ({ anchorEl,chatId }) => {
                             multiple
                             accept="video/*"  // Changed to accept all video types
                             style={{ display: 'none' }}
-                            onChange={e => fileChageHandler(e, 'Videos')}
+                            onChange={e => fileChangeHandler(e, 'Videos')}
                             ref={videoRef}
                         />
                     </MenuItem>
@@ -148,7 +119,7 @@ const FileMenu = ({ anchorEl,chatId }) => {
                             multiple
                             accept="*"
                             style={{ display: 'none' }}
-                            onChange={e => fileChageHandler(e, 'Files')}
+                            onChange={e => fileChangeHandler(e, 'Files')}
                             ref={fileRef}
                         />
                     </MenuItem>

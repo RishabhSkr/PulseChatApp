@@ -1,14 +1,14 @@
 import { Avatar, AvatarGroup, Box, Stack } from "@mui/material";
 
-const AvatarCard = ({ avatar = [], max = 4, src }) => {
+const AvatarCard = ({ avatar = [], max = 4, src, w = "3rem", h = "3rem" }) => {
   // Handle single avatar case
   if (src) {
     return (
       <Avatar
         src={src}
         sx={{
-          width: "3rem",
-          height: "3rem",
+          width: w,
+          height: h,
         }}
       />
     );
@@ -30,8 +30,8 @@ const AvatarCard = ({ avatar = [], max = 4, src }) => {
               src={avt}
               alt={`Avatar ${index}`}
               sx={{
-                width: "3rem",
-                height: "3rem",
+                width: w,
+                height: h,
                 position: "absolute",
                 left: {
                   xs: `${0.5 + index}rem`,

@@ -305,7 +305,7 @@ const sendAttachment = TryCatch(async (req, res, next) => {
     }
     // upload files to cloudinary
     const attachments = await uploadFilesTOCloudinary(files);
-
+    console.log(attachments);
     const messageForDB = {
         content: '',
         attachments,
@@ -434,7 +434,7 @@ const deleteChat = TryCatch(async (req, res, next) => {
         chat: chatId,
         attachments: { $exists: true, $ne: [] },
     });
-    console.log(messagesWithAttachments);
+    // console.log(messagesWithAttachments);
     const publicIds = [];
     messagesWithAttachments.forEach(message => {
         message.attachments.forEach(attachment => {

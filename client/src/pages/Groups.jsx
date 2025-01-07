@@ -441,7 +441,10 @@ const GroupsList = ({ w = '100%', myGroups = [], chatId }) => (
             height: '100vh',
             overflow: 'auto',
         }}
-    >
+    >   
+    <div className='text-lg p-4 border-b border-gray-700'>
+        Manage Groups
+    </div>
         {myGroups.length > 0 ? (
             myGroups.map(group => (
                 <GroupListItem group={group} chatId={chatId} key={group._id} />

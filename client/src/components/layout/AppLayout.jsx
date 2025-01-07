@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     setIsDeleteMenu,
     setIsMobileMenuChats,
+    setIsProfileVisible,
     setSelectDeleteChat,
 } from '../../redux/reducers/misc';
 import { Backdrop, Drawer, Tooltip } from '@mui/material';
@@ -26,12 +27,11 @@ import {
 import { getOrSaveFromStorage } from '../../lib/features';
 import { ONLINE_USERS, REFETCH_CHATS } from '../../constants/events';
 import DeleteChatMenu from '../../dialog/DeleteChatMenu';
-import {  ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { MobileDrawerLoader } from './loaders';
 
 const AppLayout = () => WrrapperComponent => {
     const LayoutWrapper = props => {
-        const [isProfileVisible, setIsProfileVisible] = useState(true);
+        const {isProfileVisible} = useSelector(state => state.misc);
         const navigate = useNavigate();
         const dispatch = useDispatch();
         const params = useParams();
@@ -91,10 +91,6 @@ const AppLayout = () => WrrapperComponent => {
 
         useSocketEvents(socket, eventHandler);
 
-        const toggleProfile = () => {
-            setIsProfileVisible(prev => !prev);
-        };
-
         return (
             <div className="flex flex-col min-h-screen">
                 <Title />
@@ -150,26 +146,6 @@ const AppLayout = () => WrrapperComponent => {
                     </div>
 
                     <div className={`flex-1 bg-primary flex flex-col overflow-hidden relative`}>
-                        <Tooltip title="Hide/Show Profile" placement="right">
-                            <button 
-                                onClick={toggleProfile}
-                                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-50 
-                                    bg-[#1D283A] hover:bg-[#2D384A] text-white
-                                    p-1 rounded-l-md transition-all duration-300 flex items-center gap-1
-                                     hover:opacity-100"
-                                style={{
-                                    transform: 'translateX(0) translateY(-50%)',
-                                    width: '24px',
-                                    height: '48px'
-                                }}
-                            >
-                                {isProfileVisible ? (
-                                    <ChevronRight />
-                                ) : (
-                                    <ChevronLeft />
-                                )}
-                            </button>
-                        </Tooltip>
                         <WrrapperComponent
                             {...props}
                             chatId={chatId}

@@ -66,12 +66,6 @@ const Hero = () => {
                 📲 Install App
               </button>
             )}
-            {isInstalled && (
-              <span className="inline-flex items-center px-4 py-2 text-sm text-green-400">
-                ✅ App Installed
-              </span>
-            )}
-
           </div>
         </div>
         <div className="hidden  lg:mt-0 lg:col-span-5 lg:flex">

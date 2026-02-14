@@ -10,9 +10,9 @@ import { Toaster } from 'react-hot-toast';
 import {SocketProvider }from './socket';
 
 import Landing from './pages/Landing';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 const Home = lazy(() => import('./pages/Home'));
-const Login = lazy(() => import('./pages/Login'));
-const Signup = lazy(() => import('./pages/Signup'));
 const Chat = lazy(() => import('./pages/Chat'));
 const Groups = lazy(() => import('./pages/Groups'));
 const Error404 = lazy(() => import('./pages/Error404'));

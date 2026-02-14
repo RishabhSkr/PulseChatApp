@@ -53,7 +53,7 @@ const uploadFilesTOCloudinary = async (files) => {
         const filesArray = Array.isArray(files) ? files : [files];
         return filesArray.map(() => ({
             public_id: uuid(),
-            url: 'https://via.placeholder.com/150?text=No+Cloudinary',
+            url: 'https://res.cloudinary.com/dqx7y8y8y/image/upload/v1755331200/chat-app/placeholder_z8q8q8.png',
         }));
     }
 

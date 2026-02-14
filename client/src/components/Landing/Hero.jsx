@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom';
 import HeroImage from '../../assets/Hero.svg';
 import { useSelector } from 'react-redux';
 import Logo from '../shared/Logo';
+import useInstallPrompt from '../../hooks/useInstallPrompt';
 
 const Hero = () => {
   const {user} = useSelector((state) => state.auth);
+  const { isInstallable, isInstalled, promptInstall } = useInstallPrompt();
   return (
     <section className="bg-gray-900 text-white">
       <div className="flex justify-start items-center px-6 pt-6">
@@ -53,7 +55,22 @@ const Hero = () => {
                   <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
                 </svg>
               </Link>
-            )}         
+            )}
+
+            {/* 🔵 BLUE BELT: Install App Button */}
+            {isInstallable && !isInstalled && (
+              <button
+                onClick={promptInstall}
+                className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-800 transition-all duration-200"
+              >
+                📲 Install App
+              </button>
+            )}
+            {isInstalled && (
+              <span className="inline-flex items-center px-4 py-2 text-sm text-green-400">
+                ✅ App Installed
+              </span>
+            )}
 
           </div>
         </div>

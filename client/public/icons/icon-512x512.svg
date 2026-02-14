@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Dark background -->
+  <rect width="512" height="512" fill="#111827"/>
+  
+  <!-- Blue chat bubble (centered, with padding) -->
+  <g transform="translate(256, 240)">
+    <!-- Main bubble body -->
+    <ellipse cx="0" cy="0" rx="140" ry="110" fill="#3B82F6"/>
+    <!-- Bubble tail -->
+    <path d="M -60 80 Q -80 140 -120 160 Q -40 130 -20 100 Z" fill="#3B82F6"/>
+    <!-- Shine/highlight -->
+    <ellipse cx="-30" cy="-30" rx="80" ry="50" fill="#60A5FA" opacity="0.3"/>
+  </g>
+  
+  <!-- Three dots inside bubble -->
+  <circle cx="210" cy="235" r="14" fill="white" opacity="0.9"/>
+  <circle cx="256" cy="235" r="14" fill="white" opacity="0.9"/>
+  <circle cx="302" cy="235" r="14" fill="white" opacity="0.9"/>
+</svg>

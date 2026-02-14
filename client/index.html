@@ -5,6 +5,17 @@
     <link rel="icon" type="image/svg+xml" href="/pulse.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pulse Chat</title>
+
+    <!-- 🟡 PWA Yellow Belt: Manifest & Meta Tags -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#1a1a1a" />
+    <meta name="description" content="Real-time messaging app with group chats and file sharing" />
+
+    <!-- iOS Support (Safari doesn't fully support manifest) -->
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-title" content="PulseChat" />
   </head>
   <body>
     <div id="root"></div>

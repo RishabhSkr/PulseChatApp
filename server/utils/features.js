@@ -47,6 +47,16 @@ const emitEvent = (req, event, users, data) => {
   };
 
 const uploadFilesTOCloudinary = async (files) => {
+    // If Cloudinary is not configured, return local fallback
+    if (!process.env.CLOUD_NAME || !process.env.CLOUD_API_KEY || !process.env.CLOUD_API_SECRET) {
+        console.warn('⚠️  Cloudinary not configured - using placeholder for uploads');
+        const filesArray = Array.isArray(files) ? files : [files];
+        return filesArray.map(() => ({
+            public_id: uuid(),
+            url: 'https://via.placeholder.com/150?text=No+Cloudinary',
+        }));
+    }
+
     try {
         // Ensure files is always an array
         const filesArray = Array.isArray(files) ? files : [files];
@@ -86,6 +96,10 @@ const uploadFilesTOCloudinary = async (files) => {
 };
 
 const deleteFilesFromCloudinary = async public_id => {
+    if (!process.env.CLOUD_NAME) {
+        console.warn('⚠️  Cloudinary not configured - skipping file deletion');
+        return;
+    }
     console.log('Deleting files from cloudinary');
 };
 export {

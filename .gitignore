@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Environment files (secrets!)
+.env
+server/.env
+client/.env
+
+# Docker (dev-only, not needed on Render/Vercel)
+docker-compose.yml
+Dockerfile
+.dockerignore
+server/Dockerfile
+server/.dockerignore
+client/Dockerfile
+client/.dockerignore
+
+# Logs
+npm-debug.log*
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+build/

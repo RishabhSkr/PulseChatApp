@@ -18,7 +18,7 @@ import { getSocket } from '../../socket';
 import {
     NEW_MESSAGE_ALERT,
     NEW_REQUEST,
-} from '../../../../server/constants/constants';
+} from '../../constants/events';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
     incrementNotification,

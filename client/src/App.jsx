@@ -9,7 +9,7 @@ import { CommonLoader } from './components/layout/loaders';
 import { Toaster } from 'react-hot-toast';
 import {SocketProvider }from './socket';
 
-const Landing = lazy(() => import('./pages/Landing'));
+import Landing from './pages/Landing';
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
@@ -43,10 +43,6 @@ function App() {
             });
     }, [dispatch]);
 
-    if (isLoading) {
-        return <CommonLoader />;
-    }
-
     return (
         <Router>
             <Toaster
@@ -66,7 +62,7 @@ function App() {
                     <Route
                         element={
                             <SocketProvider>
-                                <ProtectRoute user={user} />
+                                <ProtectRoute user={user} isLoading={isLoading} />
                             </SocketProvider>
                         }
                     >
@@ -75,7 +71,7 @@ function App() {
                         <Route path="/groups" element={<Groups />} />
                     </Route>
 
-                    <Route element={<ProtectRoute user={!user} redirect="/" />}>
+                    <Route element={<ProtectRoute user={!user} isLoading={isLoading} redirect="/" />}>
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
                     </Route>

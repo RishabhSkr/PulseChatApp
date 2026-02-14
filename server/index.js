@@ -19,13 +19,13 @@ import {
     START_TYPING,
     STOP_TYPING,
     CHAT_LEAVED,
+    CHAT_JOINED,
 } from './constants/constants.js';
 import { v4 as uuid } from 'uuid';
 import { getSockets } from './lib/helper.js';
 import { Message } from './model/message.js';
 import { v2 as cloudinary } from 'cloudinary';
 import {socketAuth}  from './middleware/auth.js';
-import { CHAT_JOINED } from '../client/src/constants/events.js';
 
 export const userSocketIDs = new Map();
 const onlineUsers = new Set();
@@ -64,11 +64,17 @@ io.use((socket, next) => {
 // mongoose connect with env var
 connectDB(process.env.DB_URI);
 
-cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUD_API_KEY,
-    api_secret: process.env.CLOUD_API_SECRET,
-});
+// Cloudinary config - only if credentials are provided
+if (process.env.CLOUD_NAME && process.env.CLOUD_API_KEY && process.env.CLOUD_API_SECRET) {
+    cloudinary.config({
+        cloud_name: process.env.CLOUD_NAME,
+        api_key: process.env.CLOUD_API_KEY,
+        api_secret: process.env.CLOUD_API_SECRET,
+    });
+    console.log('Cloudinary configured successfully');
+} else {
+    console.warn('⚠️  Cloudinary not configured - file uploads will use local fallback');
+}
 
 // Set max listeners to prevent warning
 process.setMaxListeners(15);

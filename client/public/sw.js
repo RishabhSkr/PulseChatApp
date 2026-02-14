@@ -105,10 +105,12 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         })
         .catch(() => {
-          // Network failed AND not in cache → show offline page
+          // Network failed AND not in cache → show offline fallback
           if (request.mode === 'navigate') {
             return caches.match('/');
           }
+          // For non-navigate requests (images, scripts etc), return proper error
+          return Response.error();
         });
     })
   );
